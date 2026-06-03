@@ -1,0 +1,15 @@
+{
+  "title": "SlackCertify: Certifying Delay-Robust MAPF Execution by Proactive Wait Insertion",
+  "description": "Solver-agnostic post-processing layer that certifies a nominal one-shot MAPF plan against bounded or probabilistic per-step delays by inserting wait actions on the original path topology.",
+  "creators": [
+    {"name": "Anonymous, Author", "affiliation": "Anonymous Institution", "orcid": "ANONYMIZED"},
+    {"name": "Co-author, Anonymous", "affiliation": "Anonymous Institution", "orcid": "ANONYMIZED"}
+  ],
+  "keywords": ["multi-agent path finding", "MAPF", "robust planning", "delay tolerance", "plan execution", "certification"],
+  "license": "MIT",
+  "upload_type": "software",
+  "access_right": "open",
+  "related_identifiers": [
+    {"relation": "isSupplementTo", "identifier": "10.0000/asyu2026.placeholder", "scheme": "doi"}
+  ]
+}

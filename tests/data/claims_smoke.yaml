@@ -1,0 +1,74 @@
+# Smoke-test claims for scripts/validate_paper_claims.py.
+#
+# Three claims selected to exercise the three evaluation paths:
+#
+#  1. A top-level-column threshold check.
+#  2. A diagnostics-key threshold check.
+#  3. A paired-method comparison.
+#
+# All three are calibrated against the bundled
+# tests/data/analysis_smoke/ CSVs so the smoke run produces three
+# "Confirmed" verdicts on a clean checkout.
+
+claims:
+
+  - id: smoke_rq1_certified_warehouse_n20
+    section: "5.1"
+    paper_sentence: |
+      On warehouse-10-20-10-2-1 at n=20, slack_certify_bounded
+      achieves at least 90% success rate.
+    evaluation:
+      source_csv: rq1_headline.csv
+      filter:
+        map_name: warehouse-10-20-10-2-1
+        n_agents: 20
+        method: slack_certify_bounded
+        status: ok
+      metric: success_rate
+      aggregation: mean
+      threshold:
+        operator: ">="
+        value: 0.90
+      tolerance: 0.02
+
+  - id: smoke_rq4_optimality_gap_max
+    section: "5.4"
+    paper_sentence: |
+      The maximum observed optimality gap was at most 25% across
+      n ≤ 16 instances.
+    evaluation:
+      source_csv: rq4_ilp_gap.csv
+      filter:
+        method: slack_certify_bounded
+        status: ok
+      metric_from_diagnostics: gap_pct_to_optimum
+      aggregation: max
+      threshold:
+        operator: "<="
+        value: 25.0
+      tolerance: 2.0
+
+  - id: smoke_rq1_certified_beats_nominal
+    section: "5.1"
+    paper_sentence: |
+      slack_certify_bounded improves success rate by at least 20
+      percentage points over nominal_unhardened on
+      warehouse-10-20-10-2-1 at n=20.
+    evaluation:
+      source_csv: rq1_headline.csv
+      paired_comparison:
+        filter_common:
+          map_name: warehouse-10-20-10-2-1
+          n_agents: 20
+          status: ok
+        method_a:
+          method: slack_certify_bounded
+        method_b:
+          method: nominal_unhardened
+        metric: success_rate
+        operation: subtract
+        aggregation: mean
+      threshold:
+        operator: ">="
+        value: 0.20
+      tolerance: 0.05

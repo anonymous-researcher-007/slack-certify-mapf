@@ -1,0 +1,19 @@
+experiment_name: ablation_budget
+
+maps:
+  - random-32-32-20
+agent_counts: [100]
+scen_seeds: [1, 2, 3, 4, 5]
+
+nominal_solver: lacam_star
+nominal_time_limit_s: 2
+
+# delta=1 for simulator alignment (Phase 7.2a/b convention).
+delta: 1
+p_d: 0.03
+epsilon: 0.05
+
+methods: [uniform, risk_proportional]
+
+rollouts: 500
+rollout_parallel_jobs: -1

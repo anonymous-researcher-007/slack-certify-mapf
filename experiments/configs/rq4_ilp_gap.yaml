@@ -1,0 +1,29 @@
+experiment_name: rq4_ilp_gap
+
+# Maps and sweep grid. Capped at n <= 20 because the wait-insertion
+# ILP scales poorly beyond ~20 agents on dense maps.
+maps:
+  - random-32-32-20
+agent_counts: [4, 8, 12, 16, 20]
+scen_seeds: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25]
+
+# Nominal solver.
+nominal_solver: lacam_star
+nominal_time_limit_s: 2
+
+# Bounded-delta margin shared by greedy and the ILP.
+delta: 2
+
+# Methods to compare per (map, n, scen_seed). Both produce one row.
+methods:
+  - slack_certify_bounded
+  - ilp_exact
+
+# ILP wall-clock budget. The runner maps the ILP's "feasible" (timed
+# out but found something) to status="ok" with diagnostics["ilp_gap"];
+# its "timeout" (no feasible) to status="timeout".
+ilp_time_limit_s: 3600
+
+# Rollout configuration (under BoundedDelayModel(delta)).
+rollouts: 500
+rollout_parallel_jobs: -1

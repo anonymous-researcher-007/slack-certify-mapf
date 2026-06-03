@@ -1,0 +1,184 @@
+[build-system]
+requires = ["hatchling>=1.24"]
+build-backend = "hatchling.build"
+
+[project]
+name = "slack-certify-mapf"
+version = "0.1.0"
+description = "Slack-Certified One-Shot MAPF: proactive, solver-agnostic wait insertion for bounded and probabilistic delay tolerance."
+readme = "README.md"
+requires-python = ">=3.10,<3.13"
+license = { file = "LICENSE" }
+keywords = [
+  "multi-agent path finding",
+  "MAPF",
+  "robust planning",
+  "delay tolerance",
+  "plan execution",
+  "certification",
+]
+authors = [
+  { name = "Anonymous Author", email = "anonymous@example.com" },
+  { name = "Anonymous Co-author", email = "anonymous@example.com" },
+]
+maintainers = [
+  { name = "Anonymous Author", email = "anonymous@example.com" },
+]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Science/Research",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: POSIX :: Linux",
+  "Operating System :: MacOS",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+  "Topic :: Scientific/Engineering :: Mathematics",
+  "Typing :: Typed",
+]
+dependencies = [
+  "numpy>=1.26",
+  "scipy>=1.11",
+  "networkx>=3.2",
+  "pydantic>=2.5",
+  "pyyaml>=6.0",
+  "typer>=0.12",
+  "rich>=13.7",
+  "tqdm>=4.66",
+  "pandas>=2.1",
+  "pyarrow>=14",
+  "jsonschema>=4.20",
+  "joblib>=1.3",
+]
+
+[project.optional-dependencies]
+ilp = [
+  "pulp>=2.7,<3",
+  "highspy>=1.7,<2",
+]
+viz = [
+  "matplotlib>=3.8",
+  "seaborn>=0.13",
+]
+docs = [
+  "mkdocs-material>=9.5",
+  "mkdocstrings[python]>=0.25",
+]
+dev = [
+  "pytest>=8",
+  "pytest-cov>=4.1",
+  "pytest-xdist",
+  "pytest-benchmark",
+  "hypothesis>=6.99",
+  "black>=24.3",
+  "ruff>=0.4",
+  "mypy>=1.10",
+  "pre-commit>=3.7",
+  "types-pyyaml",
+  "types-tqdm",
+  "nox>=2024.4.15",
+  "tox>=4.15",
+  "ipykernel",
+  "jupyterlab",
+]
+
+[project.scripts]
+slackcertify = "slackcertify.cli.__main__:app"
+
+[project.urls]
+Homepage = ""
+Documentation = ""
+Repository = ""
+
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/slackcertify"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+  "src/slackcertify",
+  "README.md",
+  "LICENSE",
+  "pyproject.toml",
+]
+
+[tool.black]
+line-length = 100
+target-version = ["py310", "py311", "py312"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+src = ["src", "tests"]
+extend-exclude = ["third_party", "docs/_build", "build", "dist"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W", "B", "UP", "N", "ANN"]
+ignore = [
+  "ANN101", # missing type annotation for self
+  "ANN102", # missing type annotation for cls
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["ANN", "D"]
+"noxfile.py" = ["ANN"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["slackcertify"]
+
+[tool.mypy]
+python_version = "3.10"
+strict = true
+files = ["src/slackcertify"]
+mypy_path = "src"
+namespace_packages = true
+explicit_package_bases = true
+warn_unreachable = true
+warn_unused_ignores = true
+show_error_codes = true
+
+[[tool.mypy.overrides]]
+module = [
+  "gurobipy.*",
+  "highspy.*",
+  "pulp.*",
+  "networkx.*",
+  "joblib.*",
+  "scipy.*",
+  "pandas.*",
+  "jsonschema.*",
+  "rich.*",
+]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--strict-markers --cov=slackcertify --cov-report=term-missing"
+markers = [
+  "unit: fast, isolated unit tests",
+  "integration: integration tests across multiple modules",
+  "property: Hypothesis-based property tests",
+  "regression: pinned-output regression tests",
+  "conformance: certificate / spec conformance tests",
+  "slow: slow tests (skip by default; enable with --runslow or -m slow)",
+]
+filterwarnings = [
+  "error",
+  "ignore::DeprecationWarning:.*",
+]
+
+[tool.interrogate]
+# Public-API docstring coverage threshold. Currently 100% on
+# src/slackcertify/; this floor catches regressions.
+fail-under = 80
+exclude = ["build", "dist", "third_party", "tests"]
+ignore-init-method = false
+ignore-init-module = true
+ignore-magic = false
+ignore-private = false
+ignore-property-decorators = false
+ignore-semiprivate = false
+verbose = 1

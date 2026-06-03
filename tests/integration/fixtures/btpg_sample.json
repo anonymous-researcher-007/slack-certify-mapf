@@ -1,0 +1,12 @@
+{
+  "agents": [
+    {"id": 0, "start": [0, 0], "goal": [2, 0]},
+    {"id": 1, "start": [0, 1], "goal": [2, 1]}
+  ],
+  "paths": [
+    {"agent_id": 0, "vertices": [[0, 0], [1, 0], [2, 0]]},
+    {"agent_id": 1, "vertices": [[0, 1], [1, 1], [2, 1]]}
+  ],
+  "makespan": 2,
+  "sum_of_costs": 4
+}

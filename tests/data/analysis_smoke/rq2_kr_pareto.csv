@@ -1,0 +1,10 @@
+map_name,n_agents,scen_seed,method,success_rate,success_rate_ci_lo,success_rate_ci_hi,executed_soc_mean,executed_makespan_mean,certifier_runtime_s,nominal_solver_runtime_s,total_waits,outer_rounds,n_conflicts_initial,delta,status,error_message,diagnostics
+warehouse-20-40-10-2-2,200,1,slack_certify_bounded,0.55,0.50,0.60,1850.0,32.0,0.30,0.40,12,3,40,0,ok,,"{""mode"": ""bounded"", ""delta"": 0}"
+warehouse-20-40-10-2-2,200,1,slack_certify_bounded,0.80,0.76,0.84,1900.0,33.0,0.40,0.40,40,5,40,1,ok,,"{""mode"": ""bounded"", ""delta"": 1}"
+warehouse-20-40-10-2-2,200,1,slack_certify_bounded,0.92,0.89,0.94,1970.0,34.0,0.55,0.40,90,7,40,2,ok,,"{""mode"": ""bounded"", ""delta"": 2}"
+warehouse-20-40-10-2-2,200,1,kr_eecbs,0.65,0.60,0.70,1880.0,32.5,0.20,0.50,0,0,0,0,ok,,"{""mode"": ""kr_eecbs"", ""k"": 0}"
+warehouse-20-40-10-2-2,200,1,kr_eecbs,0.85,0.81,0.88,1950.0,33.5,0.25,0.50,0,0,0,1,ok,,"{""mode"": ""kr_eecbs"", ""k"": 1}"
+warehouse-20-40-10-2-2,200,1,kr_eecbs,0.94,0.91,0.96,2050.0,35.0,0.35,0.50,0,0,0,2,ok,,"{""mode"": ""kr_eecbs"", ""k"": 2}"
+warehouse-20-40-10-2-2,200,1,kr_pbs,0.62,0.57,0.67,1870.0,32.2,0.10,0.50,0,0,0,0,ok,,"{""mode"": ""kr_pbs"", ""k"": 0}"
+warehouse-20-40-10-2-2,200,1,kr_pbs,0.82,0.78,0.85,1930.0,33.2,0.12,0.50,0,0,0,1,ok,,"{""mode"": ""kr_pbs"", ""k"": 1}"
+warehouse-20-40-10-2-2,200,1,kr_pbs,0.93,0.90,0.95,2020.0,34.5,0.18,0.50,0,0,0,2,ok,,"{""mode"": ""kr_pbs"", ""k"": 2}"

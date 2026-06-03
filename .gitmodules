@@ -1,0 +1,23 @@
+[submodule "third_party/EECBS"]
+	path = third_party/EECBS
+	url = https://github.com/Jiaoyang-Li/EECBS
+
+[submodule "third_party/lacam"]
+	path = third_party/lacam
+	url = https://github.com/Kei18/lacam
+
+[submodule "third_party/lacam_star"]
+	path = third_party/lacam_star
+	url = https://github.com/Kei18/lacam2
+
+[submodule "third_party/pibt2"]
+	path = third_party/pibt2
+	url = https://github.com/Kei18/pibt2
+
+[submodule "third_party/btpg"]
+	path = third_party/btpg
+	url = https://github.com/JingtianYan/BTPG
+
+[submodule "third_party/delay-introduction"]
+	path = third_party/delay-introduction
+	url = https://github.com/aria-systems-group/Delay-Robust-MAPF.git

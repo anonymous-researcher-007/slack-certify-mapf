@@ -1,0 +1,324 @@
+# SlackCertify-MAPF — paper numerical claims registry.
+#
+# Each entry is a sentence from the §V paper draft paired with the
+# evaluation recipe needed to verify it against the real Phase 7
+# CSVs. The validator (scripts/validate_paper_claims.py) reads this
+# file, runs every claim's recipe, and produces a per-verdict
+# breakdown at reports/claim_validation.md.
+#
+# Schema (per claim):
+#
+#   id:                A short stable identifier. Must be unique.
+#   section:           §V sub-section the claim belongs to.
+#   paper_sentence:    The verbatim claim sentence from the manuscript's
+#                      experiments section (placeholder OK during drafting).
+#   evaluation:
+#     source_csv:      Path relative to --results-dir.
+#     filter:          Mapping of column → equality value, OR
+#                      column → {operator: ..., value: ...} for
+#                      numeric comparisons. ``status: ok`` is the
+#                      standard "exclude failures" filter.
+#     metric:          Top-level CSV column to aggregate.
+#     metric_from_diagnostics:
+#                      Key inside the JSON-encoded "diagnostics"
+#                      column. Mutually exclusive with `metric`.
+#     aggregation:     One of {mean, median, p95, min, max,
+#                      fraction_true, fraction_ge, count}.
+#                      fraction_ge requires a sub-threshold.
+#     threshold:
+#       operator:      One of {>=, <=, ==, !=, in_range}.
+#       value:         Scalar (or [lo, hi] for in_range).
+#     tolerance:       Absolute tolerance for Stronger/Weaker
+#                      classification. Pure-equality claims should
+#                      pin tolerance to 0.0.
+#
+# For paired comparisons (method A vs method B), use the
+# ``paired_comparison`` shape instead of ``filter`` + ``metric``.
+# See rq1_warehouse_certified_beats_nominal below.
+
+claims:
+
+  # ----------------------------------------------------------------
+  # §5.1 — RQ1 headline robustness
+  # ----------------------------------------------------------------
+
+  - id: rq1_warehouse_n20_bounded_success_rate
+    section: "5.1"
+    paper_sentence: |
+      On warehouse-10-20-10-2-1 at n=20, slack_certify_bounded
+      achieves at least 90% success rate under bounded-delta delays.
+    evaluation:
+      source_csv: rq1_headline.csv
+      filter:
+        map_name: warehouse-10-20-10-2-1
+        n_agents: 20
+        method: slack_certify_bounded
+        status: ok
+      metric: success_rate
+      aggregation: mean
+      threshold:
+        operator: ">="
+        value: 0.90
+      tolerance: 0.02
+
+  - id: rq1_warehouse_certified_beats_nominal
+    section: "5.1"
+    paper_sentence: |
+      slack_certify_bounded improves success rate by at least 20
+      percentage points over nominal_unhardened on
+      warehouse-10-20-10-2-1 at n=20.
+    evaluation:
+      source_csv: rq1_headline.csv
+      paired_comparison:
+        filter_common:
+          map_name: warehouse-10-20-10-2-1
+          n_agents: 20
+          status: ok
+        method_a:
+          method: slack_certify_bounded
+        method_b:
+          method: nominal_unhardened
+        metric: success_rate
+        operation: subtract     # a - b
+        aggregation: mean
+      threshold:
+        operator: ">="
+        value: 0.20
+      tolerance: 0.05
+
+  - id: rq1_random_n50_probabilistic_beats_nominal
+    section: "5.1"
+    paper_sentence: |
+      On random-32-32-20 at n=50, slack_certify_probabilistic
+      improves success rate by at least 30 percentage points over
+      nominal_unhardened.
+    evaluation:
+      source_csv: rq1_headline.csv
+      paired_comparison:
+        filter_common:
+          map_name: random-32-32-20
+          n_agents: 50
+          status: ok
+        method_a:
+          method: slack_certify_probabilistic
+        method_b:
+          method: nominal_unhardened
+        metric: success_rate
+        operation: subtract
+        aggregation: mean
+      threshold:
+        operator: ">="
+        value: 0.30
+      tolerance: 0.05
+
+  # ----------------------------------------------------------------
+  # §5.2 — RQ2 k-Robust Pareto
+  # ----------------------------------------------------------------
+
+  - id: rq2_warehouse_delta2_success_rate
+    section: "5.2"
+    paper_sentence: |
+      On warehouse-20-40-10-2-2 at n=200, slack_certify_bounded at
+      Δ=2 achieves at least 88% success rate.
+    evaluation:
+      source_csv: rq2_kr_pareto.csv
+      filter:
+        map_name: warehouse-20-40-10-2-2
+        n_agents: 200
+        method: slack_certify_bounded
+        delta: 2
+        status: ok
+      metric: success_rate
+      aggregation: mean
+      threshold:
+        operator: ">="
+        value: 0.88
+      tolerance: 0.03
+
+  - id: rq2_certified_competitive_with_kr_eecbs
+    section: "5.2"
+    paper_sentence: |
+      At Δ=2, slack_certify_bounded's success rate is within 5
+      percentage points of kR-EECBS on warehouse-20-40-10-2-2 at
+      n=200 (delta=2 cells only).
+    evaluation:
+      source_csv: rq2_kr_pareto.csv
+      paired_comparison:
+        filter_common:
+          map_name: warehouse-20-40-10-2-2
+          n_agents: 200
+          delta: 2
+          status: ok
+        method_a:
+          method: kr_eecbs
+        method_b:
+          method: slack_certify_bounded
+        metric: success_rate
+        operation: subtract     # kr_eecbs - slack_certify_bounded
+        aggregation: mean
+      threshold:
+        operator: "<="
+        value: 0.05
+      tolerance: 0.02
+
+  # ----------------------------------------------------------------
+  # §5.3 — RQ3 close analogues
+  # ----------------------------------------------------------------
+
+  - id: rq3_ours_beats_btpg
+    section: "5.3"
+    paper_sentence: |
+      On random-32-32-20 at n=100 under Bernoulli(p_d=0.03) delays,
+      slack_certify_probabilistic improves success rate by at least
+      10 percentage points over btpg_max.
+    evaluation:
+      source_csv: rq3_close_analogues.csv
+      paired_comparison:
+        filter_common:
+          map_name: random-32-32-20
+          n_agents: 100
+          status: ok
+        method_a:
+          method: slack_certify_probabilistic
+        method_b:
+          method: btpg_max
+        metric: success_rate
+        operation: subtract
+        aggregation: mean
+      threshold:
+        operator: ">="
+        value: 0.10
+      tolerance: 0.03
+
+  - id: rq3_probabilistic_certified_above_90pct
+    section: "5.3"
+    paper_sentence: |
+      Across random-32-32-20 and warehouse-10-20-10-2-1 at n=100,
+      slack_certify_probabilistic achieves at least 90% success
+      rate.
+    evaluation:
+      source_csv: rq3_close_analogues.csv
+      filter:
+        method: slack_certify_probabilistic
+        n_agents: 100
+        status: ok
+      metric: success_rate
+      aggregation: mean
+      threshold:
+        operator: ">="
+        value: 0.90
+      tolerance: 0.02
+
+  # ----------------------------------------------------------------
+  # §5.4 — RQ4 optimality gap (greedy vs ILP)
+  # ----------------------------------------------------------------
+
+  - id: rq4_optimality_gap_max
+    section: "5.4"
+    paper_sentence: |
+      The maximum observed optimality gap (greedy vs proven ILP
+      optimum) was at most 25% across all n ≤ 16 instances.
+    evaluation:
+      source_csv: rq4_ilp_gap.csv
+      filter:
+        method: slack_certify_bounded
+        status: ok
+      metric_from_diagnostics: gap_pct_to_optimum
+      aggregation: max
+      threshold:
+        operator: "<="
+        value: 25.0
+      tolerance: 2.0
+
+  - id: rq4_matched_optimum_fraction
+    section: "5.4"
+    paper_sentence: |
+      slack_certify_bounded matched the proven ILP optimum on at
+      least 30% of cells with proven-optimal ILP outcomes.
+    evaluation:
+      source_csv: rq4_ilp_gap.csv
+      filter:
+        method: slack_certify_bounded
+        status: ok
+      metric_from_diagnostics: matched_optimum
+      aggregation: fraction_true
+      threshold:
+        operator: ">="
+        value: 0.30
+      tolerance: 0.10
+
+  # ----------------------------------------------------------------
+  # §5.5 — RQ5 persistent (MAPF-DP) delays
+  # ----------------------------------------------------------------
+
+  - id: rq5_persistent_certified_beats_nominal
+    section: "5.5"
+    paper_sentence: |
+      Under the persistent (MAPF-DP) delay regime, on
+      warehouse-10-20-10-2-1 at n=30, slack_certify_probabilistic
+      improves success rate by at least 30 percentage points over
+      nominal_unhardened.
+    evaluation:
+      source_csv: rq5_persistent.csv
+      paired_comparison:
+        filter_common:
+          map_name: warehouse-10-20-10-2-1
+          n_agents: 30
+          status: ok
+        method_a:
+          method: slack_certify_probabilistic
+        method_b:
+          method: nominal_unhardened
+        metric: success_rate
+        operation: subtract
+        aggregation: mean
+      threshold:
+        operator: ">="
+        value: 0.30
+      tolerance: 0.05
+
+  # ----------------------------------------------------------------
+  # §5.6 — Ablations (ordering / solver / budget)
+  # ----------------------------------------------------------------
+
+  - id: ablation_ordering_topological_competitive
+    section: "5.6"
+    paper_sentence: |
+      Across orderings {topological, risk_descending, random} on
+      random-32-32-20 at n=100, success rate stays at or above
+      90% — the certifier is ordering-robust.
+    evaluation:
+      source_csv: ablation_ordering.csv
+      filter:
+        status: ok
+      metric: success_rate
+      aggregation: min
+      threshold:
+        operator: ">="
+        value: 0.90
+      tolerance: 0.02
+
+  - id: ablation_budget_risk_proportional_beats_uniform
+    section: "5.6"
+    paper_sentence: |
+      risk_proportional budget allocation produces a higher
+      success rate than uniform allocation on random-32-32-20 at
+      n=100 (paired difference > 0).
+    evaluation:
+      source_csv: ablation_budget.csv
+      paired_comparison:
+        filter_common:
+          map_name: random-32-32-20
+          n_agents: 100
+          status: ok
+        method_a:
+          method: risk_proportional
+        method_b:
+          method: uniform
+        metric: success_rate
+        operation: subtract
+        aggregation: mean
+      threshold:
+        operator: ">="
+        value: 0.0
+      tolerance: 0.01

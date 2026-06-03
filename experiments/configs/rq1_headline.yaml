@@ -1,0 +1,40 @@
+experiment_name: rq1_headline
+
+# Maps and sweep grid.
+maps:
+  - warehouse-10-20-10-2-1
+  - random-32-32-20
+agent_counts: [20, 50, 100, 200]
+scen_seeds: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25]
+
+# Nominal solver.
+nominal_solver: lacam_star
+nominal_time_limit_s: 2
+
+# Methods to compare per cell.
+methods:
+  - nominal_unhardened
+  - slack_certify_bounded
+  - slack_certify_probabilistic
+
+# Per-method hyperparameters.
+slack_certify_bounded:
+  delta: 2
+slack_certify_probabilistic:
+  # required by §III Proposition 1's Δ_w=1 simulator-alignment
+  # remark; do not change without revisiting the problem-formulation
+  # section of the manuscript and docs/algorithm.md
+  delta: 1
+  p_d: 0.03
+  epsilon: 0.05
+
+# Rollout configuration.
+rollouts: 500
+rollout_parallel_jobs: -1
+
+# §V P1 delay protocol. "bernoulli" (default) keeps the existing
+# i.i.d. rollout used by the probabilistic certifier's calibration;
+# "adversarial" engages the heuristic per-tick gap-collapsing adversary
+# (HeuristicAdversaryDelay) under the bounded-Δ budget from
+# slack_certify_bounded.delta.
+# delay_protocol: bernoulli

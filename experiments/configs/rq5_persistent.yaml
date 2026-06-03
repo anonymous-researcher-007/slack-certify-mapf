@@ -1,0 +1,30 @@
+experiment_name: rq5_persistent
+
+maps:
+  - warehouse-10-20-10-2-1
+  - random-32-32-20
+agent_counts: [20, 50, 100, 200]
+scen_seeds: [1, 2, 3, 4, 5]
+
+nominal_solver: lacam_star
+nominal_time_limit_s: 2
+
+methods:
+  - nominal_unhardened
+  - slack_certify_probabilistic
+
+slack_certify_probabilistic:
+  # required by §III Proposition 1's Δ_w=1 simulator-alignment
+  # remark; do not change without revisiting the problem-formulation
+  # section of the manuscript and docs/algorithm.md
+  delta: 1
+  epsilon: 0.05    # p_d is calibrated from the persistent model
+
+persistent:
+  p_trigger: 0.03
+  min_len: 10
+  max_len: 20
+
+calibration_rollouts: 200
+rollouts: 500
+rollout_parallel_jobs: -1

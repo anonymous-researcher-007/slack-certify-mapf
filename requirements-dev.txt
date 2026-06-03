@@ -1,0 +1,23 @@
+# Development dependencies for slack-certify-mapf.
+# Install on top of requirements.txt:
+#     pip install -r requirements.txt -r requirements-dev.txt
+# or, equivalently:
+#     pip install -e ".[dev]"
+
+-r requirements.txt
+
+pytest>=8
+pytest-cov>=4.1
+pytest-xdist
+pytest-benchmark
+hypothesis>=6.99
+black>=24.3
+ruff>=0.4
+mypy>=1.10
+pre-commit>=3.7
+types-pyyaml
+types-tqdm
+nox>=2024.4.15
+tox>=4.15
+ipykernel
+jupyterlab

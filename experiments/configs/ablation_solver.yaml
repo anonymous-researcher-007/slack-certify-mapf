@@ -1,0 +1,16 @@
+experiment_name: ablation_solver
+
+maps:
+  - random-32-32-20
+agent_counts: [100]
+scen_seeds: [1, 2, 3, 4, 5]
+
+# No nominal_solver field — the sweep IS over the solver front-end.
+nominal_time_limit_s: 2
+
+delta: 2
+
+methods: [eecbs, lacam_star, pibt]
+
+rollouts: 500
+rollout_parallel_jobs: -1

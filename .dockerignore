@@ -1,0 +1,42 @@
+.git/
+.gitattributes
+.github/
+
+# Editor / IDE
+.idea/
+.vscode/
+*.swp
+
+# Python build / cache
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+build/
+dist/
+.venv/
+venv/
+.eggs/
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+.coverage
+htmlcov/
+coverage.xml
+
+# Notebooks
+.ipynb_checkpoints/
+
+# Docs
+docs/_build/
+site/
+
+# JS / tooling
+node_modules/
+
+# Project artifacts (regenerated inside the container)
+artifacts/
+results/raw/
+experiments/sweeps/
+experiments/manifests/
+*.log
