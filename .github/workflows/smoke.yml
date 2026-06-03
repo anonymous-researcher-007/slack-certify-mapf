@@ -36,7 +36,7 @@ jobs:
       - name: Install package
         run: |
           python -m pip install --upgrade pip
-          pip install -e ".[dev,ilp]"
+          pip install -e ".[dev,ilp,viz]"
 
       - name: Run repro_smoke.sh
         run: bash scripts/repro_smoke.sh
