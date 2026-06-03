@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
-import csv, time, signal, os
+import csv
+import signal
+import time
 from concurrent.futures import ProcessPoolExecutor, as_completed
 from pathlib import Path as P
 
@@ -21,10 +23,10 @@ def _alarm(signum, frame): raise _Timeout()
 def _cell(args):
     mp, n, seed, eps = args
     from slackcertify.benchmarks.scenarios import ScenarioRegistry
-    from slackcertify.solvers.lacam import LaCAMStarSolver
-    from slackcertify.repair.stn import stn_certify, STNInfeasible
-    from slackcertify.simulate.rollout import monte_carlo_rollout
     from slackcertify.delay.bernoulli import BernoulliDelayModel
+    from slackcertify.repair.stn import STNInfeasible, stn_certify
+    from slackcertify.simulate.rollout import monte_carlo_rollout
+    from slackcertify.solvers.lacam import LaCAMStarSolver
     rec = {"map": mp, "n": n, "seed": seed, "target_eps": eps, "p_d": P_D,
            "status": "", "risk_ub": "", "sep_s": "", "empirical_collision": "",
            "cert_time_s": ""}

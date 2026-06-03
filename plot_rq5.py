@@ -2,8 +2,13 @@
 per trigger probability, matched marginal rate, with Wilson CIs.
 Reads results/rq5_persistent.csv. Saves figures/fig5_rq5_persistent.png 300dpi.
 """
-import csv, collections, os, math
+import collections
+import csv
+import math
+import os
+
 import matplotlib
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np

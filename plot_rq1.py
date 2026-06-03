@@ -2,8 +2,12 @@
 nominal vs. SlackCertify-bounded, with CIs and infeasibility marking.
 No external LaTeX required. Saves a high-res PNG into figures/.
 """
-import csv, collections, os
+import collections
+import csv
+import os
+
 import matplotlib
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 

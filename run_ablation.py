@@ -7,7 +7,9 @@ For each cell: solve nominal -> certify -> record success (certified+executable
 via rollout), SoC overhead vs that solver's nominal, infeasibility.
 Two maps (consistent with RQ1-RQ4), n in {100, 200}, 25 seeds.
 """
-import csv, time, signal, os
+import csv
+import signal
+import time
 from concurrent.futures import ProcessPoolExecutor, as_completed
 from pathlib import Path as P
 
@@ -37,11 +39,11 @@ def _cell(args):
     import numpy as np
     axis, label, solver_name, mode, mp, n, seed = args
     from slackcertify.benchmarks.scenarios import ScenarioRegistry
-    from slackcertify.solvers import EECBSSolver, LaCAMStarSolver, PIBTSolver
-    from slackcertify.repair.stn import stn_certify, STNInfeasible
-    from slackcertify.simulate.rollout import monte_carlo_rollout
     from slackcertify.delay.bernoulli import BernoulliDelayModel
     from slackcertify.delay.bounded import BoundedDelayModel
+    from slackcertify.repair.stn import STNInfeasible, stn_certify
+    from slackcertify.simulate.rollout import monte_carlo_rollout
+    from slackcertify.solvers import EECBSSolver, LaCAMStarSolver, PIBTSolver
     SOLVERS = {"eecbs": EECBSSolver, "lacam_star": LaCAMStarSolver, "pibt": PIBTSolver}
     rec = {"axis": axis, "variant": label, "solver": solver_name, "mode": mode,
            "map": mp, "n": n, "seed": seed, "status": "", "success": "",

@@ -4,8 +4,12 @@ Empirical collision rate vs. target epsilon, with the y=eps diagonal
 the conservatism band. Points below the diagonal => certificate holds.
 Reads results/rq3_tightness.csv. Saves figures/fig3_rq3_tightness.png 300dpi.
 """
-import csv, collections, os
+import collections
+import csv
+import os
+
 import matplotlib
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
@@ -82,6 +86,7 @@ print(f"wrote {OUT}")
 # summary
 print("\n--- summary ---")
 import statistics as st
+
 ok = [r for r in rows if r["status"]=="ok" and r["risk_ub"]]
 viol = sum(1 for r in ok if float(r["empirical_collision"])>float(r["target_eps"]))
 print(f"ok cells: {len(ok)}, empirical>eps violations: {viol}")

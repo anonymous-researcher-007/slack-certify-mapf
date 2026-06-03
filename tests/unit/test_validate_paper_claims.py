@@ -23,7 +23,6 @@ if str(_REPO_ROOT) not in sys.path:
 
 from scripts import validate_paper_claims as v  # noqa: E402
 
-
 # --------------------------------------------------------------- fixtures
 
 

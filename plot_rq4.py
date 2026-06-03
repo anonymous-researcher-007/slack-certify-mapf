@@ -1,7 +1,10 @@
-import csv, collections, os
+import csv
+import collections
+import os
 import matplotlib; matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
+
 r3 = list(csv.DictReader(open("results/rq3_tightness.csv")))
 r1 = list(csv.DictReader(open("results/rq1_bounded.csv")))
 WARE, RAND = "warehouse-10-20-10-2-1", "random-32-32-20"

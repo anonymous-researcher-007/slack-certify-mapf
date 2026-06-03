@@ -11,7 +11,6 @@ from slackcertify.core.plan import Agent, Path, Plan
 from slackcertify.delay.adversarial import HeuristicAdversaryDelay
 from tests.property.strategies import cross_plans
 
-
 # --------------------------------------------------------------- test 1
 
 

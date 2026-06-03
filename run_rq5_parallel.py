@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """RQ5 persistent-delay stress: certify bounded, calibrate matched p_d, roll out P2 vs P3."""
-import csv, time, signal, os
+import csv
+import signal
+import time
 from concurrent.futures import ProcessPoolExecutor, as_completed
 from pathlib import Path as P
 
@@ -21,12 +23,12 @@ def _cell(args):
     import numpy as np
     mp, n, seed, ptrig = args
     from slackcertify.benchmarks.scenarios import ScenarioRegistry
-    from slackcertify.solvers.lacam import LaCAMStarSolver
-    from slackcertify.repair.stn import stn_certify, STNInfeasible
-    from slackcertify.simulate.rollout import monte_carlo_rollout
     from slackcertify.delay.bernoulli import BernoulliDelayModel
-    from slackcertify.delay.persistent import PersistentDelayModel
     from slackcertify.delay.calibration import calibrate_bernoulli_to_persistent
+    from slackcertify.delay.persistent import PersistentDelayModel
+    from slackcertify.repair.stn import STNInfeasible, stn_certify
+    from slackcertify.simulate.rollout import monte_carlo_rollout
+    from slackcertify.solvers.lacam import LaCAMStarSolver
     rec = {"map": mp, "n": n, "seed": seed, "p_trigger": ptrig,
            "min_len": MIN_LEN, "max_len": MAX_LEN, "p_d_calib": "",
            "status": "", "success_P2": "", "success_P3": "", "time_s": ""}

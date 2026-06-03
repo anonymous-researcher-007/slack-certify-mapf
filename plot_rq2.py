@@ -2,8 +2,13 @@
 Reads results/rq2_ilp.csv. Saves figures/fig2_rq2_gap_runtime.png at 300 dpi.
 No external LaTeX required.
 """
-import csv, json, collections, os
+import collections
+import csv
+import json
+import os
+
 import matplotlib
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
