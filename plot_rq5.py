@@ -39,7 +39,7 @@ p2m = [np.mean(agg[pt]["p2"]) for pt in PTS]
 p3m = [np.mean(agg[pt]["p3"]) for pt in PTS]
 # CI across instances (SEM-based), simpler & honest for a mean of rates
 def ci(vals):
-    m = np.mean(vals); s = np.std(vals, ddof=1)/math.sqrt(len(vals)) if len(vals) > 1 else 0
+    np.mean(vals); s = np.std(vals, ddof=1)/math.sqrt(len(vals)) if len(vals) > 1 else 0
     return 1.96*s
 p2e = [ci(agg[pt]["p2"]) for pt in PTS]
 p3e = [ci(agg[pt]["p3"]) for pt in PTS]
