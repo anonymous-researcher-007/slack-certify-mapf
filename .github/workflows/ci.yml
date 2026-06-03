@@ -72,7 +72,7 @@ jobs:
       - name: Upload coverage to Codecov
         # Non-fatal: codecov outages must not fail the build for an
         # open-source project that doesn't gate merges on coverage.
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v6
         continue-on-error: true
         with:
           files: ./coverage.xml
