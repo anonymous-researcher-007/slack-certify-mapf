@@ -1,0 +1,30 @@
+experiment_name: rq2_kr_pareto
+
+# Maps and sweep grid.
+maps:
+  - warehouse-20-40-10-2-2
+agent_counts: [200]
+scen_seeds: [1, 2, 3, 4, 5]
+
+# Nominal solver.
+nominal_solver: lacam_star
+nominal_time_limit_s: 2
+
+# Bounded-delta sweep (also passed as k= to the k-Robust baselines).
+delta_sweep: [0, 1, 2, 3, 5]
+
+# Methods to compare per cell.
+methods:
+  - slack_certify_bounded
+  - kr_eecbs
+  - kr_pbs
+
+# Rollout configuration.
+rollouts: 500
+rollout_parallel_jobs: -1
+
+# §V P1 delay protocol. "bounded" (default) keeps the existing random
+# feasible-Δ rollout (BoundedDelayModel); "adversarial" engages the
+# heuristic per-tick gap-collapsing adversary (HeuristicAdversaryDelay)
+# under the same per-cell Δ from delta_sweep.
+# delay_protocol: bounded

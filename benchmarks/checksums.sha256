@@ -1,0 +1,4 @@
+# MovingAI benchmark checksums.
+# Auto-populated by scripts/update_checksums.sh after the
+# first successful run of benchmarks/download_movingai.sh.
+# Format: <sha256>  <path>

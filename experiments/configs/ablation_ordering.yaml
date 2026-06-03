@@ -1,0 +1,21 @@
+experiment_name: ablation_ordering
+
+maps:
+  - random-32-32-20
+agent_counts: [100]
+scen_seeds: [1, 2, 3, 4, 5]
+
+nominal_solver: lacam_star
+nominal_time_limit_s: 2
+
+# The sweep is over the three orderings declared in
+# :mod:`slackcertify.repair.ordering`. All three run in probabilistic
+# mode because slack_certify's "risk" ordering hard-requires p_d.
+delta: 2
+p_d: 0.03
+epsilon: 0.05
+
+methods: [topological, risk_descending, random]
+
+rollouts: 500
+rollout_parallel_jobs: -1

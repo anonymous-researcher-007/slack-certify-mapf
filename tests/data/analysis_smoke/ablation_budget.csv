@@ -1,0 +1,5 @@
+map_name,n_agents,scen_seed,method,success_rate,success_rate_ci_lo,success_rate_ci_hi,executed_soc_mean,executed_makespan_mean,certifier_runtime_s,nominal_solver_runtime_s,total_waits,outer_rounds,n_conflicts_initial,delta,status,error_message,diagnostics
+random-32-32-20,100,1,uniform,0.91,0.88,0.94,820.0,30.0,0.10,0.20,14,4,15,,ok,,"{""budget_alloc"": ""uniform""}"
+random-32-32-20,100,2,uniform,0.90,0.87,0.93,824.0,30.2,0.11,0.21,15,4,15,,ok,,"{""budget_alloc"": ""uniform""}"
+random-32-32-20,100,1,risk_proportional,0.94,0.91,0.96,815.0,29.8,0.11,0.20,10,3,15,,ok,,"{""budget_alloc"": ""risk_proportional""}"
+random-32-32-20,100,2,risk_proportional,0.93,0.90,0.95,817.0,29.9,0.12,0.21,11,3,15,,ok,,"{""budget_alloc"": ""risk_proportional""}"

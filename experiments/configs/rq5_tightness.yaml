@@ -1,0 +1,44 @@
+experiment_name: rq5_tightness
+
+# RQ5 certificate-tightness sweep. For each target epsilon we certify the
+# nominal plan in probabilistic mode and measure the empirical collision
+# rate under the persistent (MAPF-DP) delay model. The claim under test is
+# that the empirical collision rate stays at or below the certified target
+# epsilon (the union bound is sound and not vacuously loose).
+
+maps:
+  - warehouse-10-20-10-2-1
+  - random-32-32-20
+agent_counts: [20, 50, 100]
+scen_seeds: [1, 2, 3, 4, 5]
+
+nominal_solver: lacam_star
+nominal_time_limit_s: 2
+
+# Only the probabilistic certifier is swept; the nominal baseline does not
+# depend on epsilon, so including it would only produce redundant rows.
+methods:
+  - slack_certify_probabilistic
+
+# Target risk values swept per cell (one CSV row per epsilon). The cell's
+# epsilon is logged in the `epsilon` column and enters the manifest key, so
+# cells differing only in epsilon resume independently.
+epsilon_sweep: [0.001, 0.005, 0.01, 0.05, 0.1]
+
+slack_certify_probabilistic:
+  # required by §III Proposition 1's Δ_w=1 simulator-alignment remark; do
+  # not change without revisiting the problem-formulation section of the manuscript and
+  # docs/algorithm.md. `epsilon` here is the default used only when
+  # `epsilon_sweep` is absent; the sweep overrides it per cell. p_d is
+  # calibrated from the persistent model.
+  delta: 1
+  epsilon: 0.05
+
+persistent:
+  p_trigger: 0.03
+  min_len: 10
+  max_len: 20
+
+calibration_rollouts: 200
+rollouts: 500
+rollout_parallel_jobs: -1
