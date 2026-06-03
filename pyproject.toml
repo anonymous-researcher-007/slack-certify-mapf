@@ -122,10 +122,6 @@ ignore = [
   "ANN102", # missing type annotation for cls
 ]
 
-[tool.ruff.lint.per-file-ignores]
-"tests/**" = ["ANN", "D"]
-"noxfile.py" = ["ANN"]
-
 [tool.ruff.lint.isort]
 known-first-party = ["slackcertify"]
 
@@ -184,5 +180,7 @@ ignore-semiprivate = false
 verbose = 1
 
 [tool.ruff.lint.per-file-ignores]
+"tests/*" = ["S101"," ANN", "D"]
 "plot_*.py" = ["E501", "E701", "E702", "ANN", "N816", "E402", "B905"]
 "run_*.py" = ["E501", "E701", "E702", "ANN", "N806", "N817", "N818", "I001"]
+"noxfile.py" = ["ANN"]
